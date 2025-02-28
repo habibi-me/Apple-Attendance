@@ -42,6 +42,7 @@ function loadSessions() {
             $("#ddlclass").html(x);
         },
         error: function(e) {
+            console.error("Error loading sessions:", e); // Log the error
             alert("Failed to load sessions. Please try again.");
         }
     });
@@ -69,6 +70,7 @@ function getGradeCardHTML(classlist) {
  * @param {number} sessionid Session ID
  */
 function fetchFacultyGrades(facid, sessionid) {
+    console.log("Fetching grades for faculty:", facid, "and session:", sessionid); // Log the parameters
     $.ajax({
         url: "ajaxhandler/attendanceAJAX.php",
         type: "POST",
@@ -81,6 +83,7 @@ function fetchFacultyGrades(facid, sessionid) {
             $("#classlistarea").html(x);
         },
         error: function(e) {
+            console.error("Error fetching grades:", e); // Log the error
             alert("Failed to fetch grades. Please try again.");
         }
     });
@@ -150,6 +153,7 @@ function getStudentListHTML(studentList) {
  * @param {string} ondate Date in YYYY-MM-DD format
  */
 function fetchStudentList(sessionid, classid, facid, ondate) {
+    console.log("Fetching students for session:", sessionid, "class:", classid, "faculty:", facid, "date:", ondate); // Log the parameters
     if (sessionid == -1 || classid == -1 || facid == -1 || !ondate) {
         alert("Please select a valid session, class, and date.");
         return;
@@ -166,6 +170,7 @@ function fetchStudentList(sessionid, classid, facid, ondate) {
             $("#studentlistarea").html(x);
         },
         error: function(e) {
+            console.error("Error fetching student list:", e); // Log the error
             alert("Failed to fetch student list. Please try again.");
         }
     });
@@ -196,6 +201,7 @@ function saveAttendance(studentid, gradeid, facultyid, sessionid, ondate, ispres
             }
         },
         error: function(e) {
+            console.error("Error saving attendance:", e); // Log the error
             alert("Failed to save attendance. Please try again.");
         }
     });
@@ -224,6 +230,7 @@ function downloadCSV(sessionid, classid, facid) {
             document.body.removeChild(link);
         },
         error: function(e) {
+            console.error("Error downloading report:", e); // Log the error
             alert("Failed to download the report. Please try again.");
         }
     });
@@ -242,6 +249,7 @@ $(function() {
                 document.location.replace("login.php");
             },
             error: function(e) {
+                console.error("Error logging out:", e); // Log the error
                 alert("Something went wrong!");
             }
         });
@@ -305,13 +313,4 @@ $(function() {
         let facid = $("#hiddenFacId").val();
         downloadCSV(sessionid, classid, facid);
     });
-});
-$(document).on("change", "#ddlclass", function() {
-    let si = $("#ddlclass").val();
-    console.log("Selected Session ID:", si); // Log the selected session ID
-    if (si != -1) {
-        let sessionid = si;
-        let facid = $("#hiddenFacId").val();
-        fetchFacultyGrades(facid, sessionid);
-    }
 });
